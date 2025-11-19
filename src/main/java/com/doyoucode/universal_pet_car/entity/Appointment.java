@@ -1,11 +1,14 @@
 package com.doyoucode.universal_pet_car.entity;
 
 import com.doyoucode.universal_pet_car.enums.AppointmentStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,6 +21,7 @@ import java.util.Random;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "patient", "veterinarian"})
 public class Appointment {
 
     @Id
@@ -26,12 +30,15 @@ public class Appointment {
 
     private String reason;
 
-    private LocalDate date;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate appointmentDate;
 
-    private LocalTime time;
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime appointmentTime;
 
     private String appointmentNo;
 
+    @CreationTimestamp
     private LocalDate createAt;
 
     @Enumerated(EnumType.STRING)
@@ -56,7 +63,7 @@ public class Appointment {
     }
 
     public void addVeterinarian(User recipient){
-        this.setPatient(recipient);
+        this.setVeterinarian(recipient);
 
         if (recipient.getAppointments() == null){
             recipient.setAppointments(new ArrayList<>());
@@ -64,7 +71,7 @@ public class Appointment {
         recipient.getAppointments().add(this);
     }
 
-    public void setAppointmentNo(String appointmentNo){
+    public void setAppointmentNo(){
         this.appointmentNo = String.valueOf(new Random().nextLong()).substring(1, 11);
     }
 

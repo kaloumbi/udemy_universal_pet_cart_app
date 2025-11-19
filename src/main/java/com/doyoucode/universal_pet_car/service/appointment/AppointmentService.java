@@ -10,6 +10,7 @@ import com.doyoucode.universal_pet_car.request.AppointementUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -23,6 +24,11 @@ public class AppointmentService implements IAppointmentService {
 
 
     @Override
+    public List<Appointment> getAllAppointments(){
+        return appointmentRepo.findAll();
+    }
+
+    @Override
     public Appointment createAppointment(Appointment appointment, Long senderId, Long recipientId) {
         Optional<User> sender = userRepo.findById(senderId);
         Optional<User> recipient = userRepo.findById(recipientId);
@@ -30,7 +36,7 @@ public class AppointmentService implements IAppointmentService {
         if (sender.isPresent() && recipient.isPresent()) {
             appointment.addPatient(recipient.get());
             appointment.addVeterinarian(recipient.get());
-            appointment.getAppointmentNo();
+            appointment.setAppointmentNo();
             appointment.setAppointmentStatus(AppointmentStatus.WAITING_FOR_APPROVAL);
 
             return appointmentRepo.save(appointment);
@@ -45,8 +51,8 @@ public class AppointmentService implements IAppointmentService {
         if (! Objects.equals(existingAppointment.getAppointmentStatus(), AppointmentStatus.WAITING_FOR_APPROVAL)){
             throw new IllegalArgumentException("Sorry. this appointment can no longo be updated");
         }
-        existingAppointment.setDate(request.getAppointmentDate());
-        existingAppointment.setTime(request.getAppointmentTime());
+        existingAppointment.setAppointmentDate(request.getAppointmentDate());
+        existingAppointment.setAppointmentTime(request.getAppointmentTime());
         existingAppointment.setReason(request.getReason());
         return appointmentRepo.save(existingAppointment);
     }
