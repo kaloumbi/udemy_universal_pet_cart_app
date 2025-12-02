@@ -1,6 +1,8 @@
 package com.doyoucode.universal_pet_car.utils;
 
 public class UrlMapping {
+
+    /* ========================== FOR API =============================== */
     public static final String API = "/api/v1";
 
     /* ========================== FOR USERS =============================== */
@@ -25,4 +27,11 @@ public class UrlMapping {
     public static final String DELETE_APPOINTMENT = "/appointment/{id}/delete";
     public static final String UPDATE_APPOINTMENT = "/appointment/{id}/update";
 
+
+    /* ========================== FOR PETS =============================== */
+    public static final String PETS = API + "/pets";
+    public static final String SAVE_PETS_FOR_APPOINTMENT = "/save-pets";
+    public static final String GET_PET_BY_ID = "/pet/{id}/pet";
+    public static final String DELETE_PET = "/pet/{id}/deleted";
+    public static final String UPDATE_PET = "/pet/{id}/updated";
 }

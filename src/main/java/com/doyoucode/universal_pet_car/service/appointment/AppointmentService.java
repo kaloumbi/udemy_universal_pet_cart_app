@@ -1,14 +1,19 @@
 package com.doyoucode.universal_pet_car.service.appointment;
 
 import com.doyoucode.universal_pet_car.entity.Appointment;
+import com.doyoucode.universal_pet_car.entity.Pet;
 import com.doyoucode.universal_pet_car.entity.User;
 import com.doyoucode.universal_pet_car.enums.AppointmentStatus;
 import com.doyoucode.universal_pet_car.exceptions.ResourceNotFoundException;
 import com.doyoucode.universal_pet_car.repository.AppointmentRepo;
+import com.doyoucode.universal_pet_car.repository.PetRepo;
 import com.doyoucode.universal_pet_car.repository.UserRepo;
 import com.doyoucode.universal_pet_car.request.AppointementUpdateRequest;
+import com.doyoucode.universal_pet_car.request.BookAppointmentRequest;
+import com.doyoucode.universal_pet_car.service.pet.IPetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,16 +27,30 @@ public class AppointmentService implements IAppointmentService {
 
     private final UserRepo userRepo;
 
+    private final IPetService petService;
 
     @Override
     public List<Appointment> getAllAppointments(){
         return appointmentRepo.findAll();
     }
 
+    @Transactional
     @Override
-    public Appointment createAppointment(Appointment appointment, Long senderId, Long recipientId) {
+    public Appointment createAppointment(BookAppointmentRequest request, Long senderId, Long recipientId) {
         Optional<User> sender = userRepo.findById(senderId);
         Optional<User> recipient = userRepo.findById(recipientId);
+
+        //=================== PET FOR APPOINTMENT TASK ====================//
+
+        Appointment appointment = request.getAppointment();
+
+        List<Pet> pets = request.getPets();
+        pets.forEach(pet -> pet.setAppointment(appointment));
+        List<Pet> savePets = petService.savePetForAppointment(pets);
+        appointment.setPets(savePets);
+
+        //=================== PET FOR APPOINTMENT TASK ====================//
+
 
         if (sender.isPresent() && recipient.isPresent()) {
             appointment.addPatient(recipient.get());

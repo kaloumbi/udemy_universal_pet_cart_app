@@ -6,6 +6,7 @@ import com.doyoucode.universal_pet_car.dto.EntityConverter;
 import com.doyoucode.universal_pet_car.entity.Appointment;
 import com.doyoucode.universal_pet_car.exceptions.ResourceNotFoundException;
 import com.doyoucode.universal_pet_car.request.AppointementUpdateRequest;
+import com.doyoucode.universal_pet_car.request.BookAppointmentRequest;
 import com.doyoucode.universal_pet_car.response.ApiResponse;
 import com.doyoucode.universal_pet_car.service.appointment.IAppointmentService;
 import com.doyoucode.universal_pet_car.utils.FeedBackMessage;
@@ -32,7 +33,7 @@ public class AppointmentController {
         try {
             List<Appointment> appointments = appointmentService.getAllAppointments();
 
-            return ResponseEntity.status(FOUND).body(new ApiResponse(FeedBackMessage.FOUND, appointments));
+            return ResponseEntity.status(FOUND).body(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, appointments));
         } catch (Exception ex) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(ex.getMessage(), null));
         }
@@ -40,14 +41,14 @@ public class AppointmentController {
 
     @PostMapping(UrlMapping.BOOK_APPOINTMENT)
     public ResponseEntity<ApiResponse> bookAppointments(
-            @RequestBody Appointment appointment,
+            @RequestBody BookAppointmentRequest request,
             @RequestParam Long senderId,
             @RequestParam Long recipientId
     ){
         try {
-            Appointment theAppointment = appointmentService.createAppointment(appointment, senderId, recipientId);
+            Appointment theAppointment = appointmentService.createAppointment(request, senderId, recipientId);
             AppointmentDto appointmentDto = entityConverter.mapEntityToDto(theAppointment, AppointmentDto.class);
-            return ResponseEntity.status(FOUND).body(new ApiResponse(FeedBackMessage.SUCCESS, appointmentDto));
+            return ResponseEntity.status(FOUND).body(new ApiResponse(FeedBackMessage.CREATE_SUCCESS, appointmentDto));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(ex.getMessage(), null));
         }catch (Exception ex){
@@ -61,7 +62,7 @@ public class AppointmentController {
         try {
             Appointment appointment = appointmentService.getAppointmentById(id);
             AppointmentDto appointmentDto = entityConverter.mapEntityToDto(appointment, AppointmentDto.class);
-            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.FOUND, appointmentDto));
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, appointmentDto));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(ex.getMessage(), null));
         }catch (Exception ex){
@@ -86,7 +87,7 @@ public class AppointmentController {
         try {
             Appointment appointment = appointmentService.getAppointmentByNo(appointmentNo);
             AppointmentDto appointmentDto = entityConverter.mapEntityToDto(appointment, AppointmentDto.class);
-            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.FOUND, appointmentDto));
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, appointmentDto));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(ex.getMessage(), null));
         }catch (Exception ex){

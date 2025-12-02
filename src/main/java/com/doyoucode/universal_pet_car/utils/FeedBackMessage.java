@@ -4,9 +4,9 @@ public class FeedBackMessage {
 
     public static final String UPDATE_SUCCESS = " Resource added successfully !";
 
-    public static final String FOUND = " Resource Found !";
+    public static final String RESOURCE_FOUND = " Resource Found !";
 
-    public static final String SUCCESS = "Resource registered successfully ! ";
+    public static final String CREATE_SUCCESS = "Resource registered successfully ! ";
 
     public static final String DELETE_SUCCESS = "Resource deleted successfully !";
 
