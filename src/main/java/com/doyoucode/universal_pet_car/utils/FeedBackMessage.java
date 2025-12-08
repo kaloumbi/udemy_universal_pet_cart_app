@@ -12,7 +12,8 @@ public class FeedBackMessage {
 
     public static final String ALREADY_APPROVED = "Sorry, this appointment is already approved !";
 
-    public static final String NOT_FOUND = "Resource Not Found !";
+    public static final String RESOURCE_NOT_FOUND = "Resource Not Found !";
 
     public static final String SENDER_RECIPIENT_NO_FOUND = "Sender or recipient not found !";
+    public static final String SERVER_ERROR = "SERVER ERROR";
 }

@@ -94,7 +94,7 @@ public class UserController {
             List<UserDto> userDtos = userService.getAllUsers();
             return ResponseEntity.status(FOUND).body(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, userDtos));
         } catch (ResourceNotFoundException ex) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(FeedBackMessage.NOT_FOUND, null));
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(FeedBackMessage.RESOURCE_NOT_FOUND, null));
         }catch (Exception ex){
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(ex.getMessage(), null));
         }
