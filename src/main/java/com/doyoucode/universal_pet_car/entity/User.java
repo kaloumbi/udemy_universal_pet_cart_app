@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.swing.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -47,10 +49,21 @@ public class User  {
     private String specialization;
 
     @Transient
-    private List<Appointment> appointments;
+    private List<Appointment> appointments = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Photo photo;
+
+    @Transient
+    private List<Review> reviews = new ArrayList<>();
+
+
+
+
+
+
+
+
 
 
     public  void removeUserPhoto(){
