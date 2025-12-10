@@ -7,5 +7,6 @@ public enum AppointmentStatus {
     APPROVED,
     NOT_APPROVED,
     WAITING_FOR_APPROVAL,
-    PENDING
+    PENDING,
+    COMPLETED
 }
