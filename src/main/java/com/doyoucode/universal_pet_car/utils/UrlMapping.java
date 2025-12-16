@@ -42,4 +42,19 @@ public class UrlMapping {
     public static final String UPDATE_PHOTO = "/photo/{photoId}/update";
     public static final String DELETE_PHOTO = "/photo/{photoId}/user/{userId}/delete";
     public static final String GET_PHOTO_BY_ID = "/photo/{photoId}/detail";
+
+
+
+    /* ========================== START PHOTO API =============================== */
+    public static final String REVIEWS = API + "/reviews";
+    public static final String SUBMIT_REVIEW = "/submit-review";
+    public static final String GET_USER_REVIEWS = "/user/{userId}/reviews";
+    public static final String UPDATE_REVIEW = "/review/{reviewId}/update";
+
+
+//    public static final String UPLOAD_PHOTO = "/photo/upload";
+//    public static final String UPDATE_PHOTO = "/photo/{photoId}/update";
+//    public static final String DELETE_PHOTO = "/photo/{photoId}/user/{userId}/delete";
+//    public static final String GET_PHOTO_BY_ID = "/photo/{photoId}/detail";
+//    public static final String REVIEWS = "/api/reviews";
 }

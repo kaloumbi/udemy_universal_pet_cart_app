@@ -1,7 +1,7 @@
 package com.doyoucode.universal_pet_car.factory;
 
 import com.doyoucode.universal_pet_car.entity.User;
-import com.doyoucode.universal_pet_car.exceptions.UserAlreadyExistsException;
+import com.doyoucode.universal_pet_car.exceptions.AlreadyExistsException;
 import com.doyoucode.universal_pet_car.repository.UserRepo;
 import com.doyoucode.universal_pet_car.request.RegistrationRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class SimpleUserFactory implements UserFactory {
     @Override
     public User createUser(RegistrationRequest registrationRequest) {
         if (userRepo.existsByEmail(registrationRequest.getEmail())){
-            throw new UserAlreadyExistsException("Oops! " + registrationRequest.getEmail() + " already exists !");
+            throw new AlreadyExistsException("Oops! " + registrationRequest.getEmail() + " already exists !");
         }
         switch (registrationRequest.getUserType()){
             case "VET" -> {

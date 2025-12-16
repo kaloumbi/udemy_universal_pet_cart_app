@@ -15,5 +15,8 @@ public class FeedBackMessage {
     public static final String RESOURCE_NOT_FOUND = "Resource Not Found !";
 
     public static final String SENDER_RECIPIENT_NO_FOUND = "Sender or recipient not found !";
+
     public static final String SERVER_ERROR = "SERVER ERROR";
+
+    public static final String VET_OR_PATIENT_NOT_FOUND = "Veterinarian or Patient Not Found !";
 }

@@ -4,7 +4,7 @@ import com.doyoucode.universal_pet_car.dto.EntityConverter;
 import com.doyoucode.universal_pet_car.dto.UserDto;
 import com.doyoucode.universal_pet_car.entity.User;
 import com.doyoucode.universal_pet_car.exceptions.ResourceNotFoundException;
-import com.doyoucode.universal_pet_car.exceptions.UserAlreadyExistsException;
+import com.doyoucode.universal_pet_car.exceptions.AlreadyExistsException;
 import com.doyoucode.universal_pet_car.repository.UserRepo;
 import com.doyoucode.universal_pet_car.request.RegistrationRequest;
 import com.doyoucode.universal_pet_car.request.UserUpdateRequest;
@@ -40,7 +40,7 @@ public class UserController {
             User user = userService.register(registrationRequest);
             UserDto userDto = entityConverter.mapEntityToDto(user, UserDto.class);
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.CREATE_SUCCESS, userDto)); //usage du message
-        } catch (UserAlreadyExistsException ex) {
+        } catch (AlreadyExistsException ex) {
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(ex.getMessage(), null));
         }catch (RuntimeException ex){
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(ex.getMessage(), null));
