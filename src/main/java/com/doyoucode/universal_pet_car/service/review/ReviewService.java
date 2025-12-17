@@ -1,5 +1,6 @@
 package com.doyoucode.universal_pet_car.service.review;
 
+import com.doyoucode.universal_pet_car.dto.ReviewDto;
 import com.doyoucode.universal_pet_car.entity.Review;
 import com.doyoucode.universal_pet_car.entity.User;
 import com.doyoucode.universal_pet_car.enums.AppointmentStatus;
@@ -45,10 +46,10 @@ public class ReviewService implements IReviewService {
         }
 
         // 3. Check if the reviewer has gotten a completed appointment with this doctor
-        boolean hadCompletedAppointments = appointmentRepo.existsByVeterinarianIdAndPatientIdAndAppointmentStatus(veterinarianId, reviewId, AppointmentStatus.COMPLETED);
-        if (!hadCompletedAppointments){
-            throw new IllegalStateException("Sorry, only patient with has a completed appointments with this veterinarian can leave a review !");
-        }
+//        boolean hadCompletedAppointments = appointmentRepo.existsByVeterinarianIdAndPatientIdAndAppointmentStatus(veterinarianId, reviewId, AppointmentStatus.COMPLETED);
+//        if (!hadCompletedAppointments){
+//            throw new IllegalStateException("Sorry, only patient with has a completed appointments with this veterinarian can leave a review !");
+//        }
         // 4. Get the veterinariant  (Patient) from the database
         User vet = userRepo.findById(reviewId).orElseThrow(() -> new ResourceNotFoundException(FeedBackMessage.VET_OR_PATIENT_NOT_FOUND));
         // 5. Get the  from reviewer the database.
@@ -64,7 +65,7 @@ public class ReviewService implements IReviewService {
 
     @Transactional
     @Override
-    public double getAverageRatingForVet(Long reviewId, Long veterinarianId) {
+    public double getAverageRatingForVet(Long veterinarianId) {
         List<Review> reviews = reviewRepo.findByVeterinarianId(veterinarianId);
 
         return reviews.isEmpty() ? 0 : reviews.stream()
@@ -88,9 +89,26 @@ public class ReviewService implements IReviewService {
     @Override
     public Page<Review> findAllReviewsByUserId(Long userId, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-
         return reviewRepo.findAllByUserId(userId, pageRequest);
     }
 
+
+
+
+    // Steps:
+
+    // Implement the delete method to enable users to edit review their review
+    @Override
+    public void deleteReview(Long reviewerId){
+
+        // 1. get the review from the database
+        // 2. Check and remove all relationships between the review and other users (patient and veterinarian)
+        reviewRepo.findById(reviewerId)
+                .ifPresentOrElse(Review::removeRelationShip, () -> {
+                    throw new ResourceNotFoundException(FeedBackMessage.RESOURCE_NOT_FOUND);
+                });
+        // 3. Delete the Review
+        reviewRepo.deleteById(reviewerId);
+    }
 
 }

@@ -10,10 +10,12 @@ public interface IReviewService {
 
     Review saveReview(Review review, Long reviewId, Long veterinarianId);
 
-    double getAverageRatingForVet(Long reviewId, Long veterinarianId);
+    double getAverageRatingForVet(Long veterinarianId);
 
     Review updateReview(Long reviewerId, ReviewUpdateRequest review);
 
     Page<Review> findAllReviewsByUserId(Long userId, int page, int size);
 
+    // Implement the delete method to enable users to edit review their review
+    void deleteReview(Long reviewerId);
 }
