@@ -18,11 +18,11 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        private Long id;
 
-    private String feeback;
+        private String feeback;
 
-    private int stars;
+        private int stars;
 
     @ManyToOne
     @JoinColumn(name = "veterinarian_id")
