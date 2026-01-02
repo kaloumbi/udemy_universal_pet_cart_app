@@ -36,13 +36,13 @@ public class UserDto {
 
     private List<AppointmentDto> appointments = new ArrayList<>();
 
-    private Photo photo;
+    //private Photo photo;
 
     private List<ReviewDto> reviews = new ArrayList<>();
 
-    private long imageId;
+    private long photoId;
 
-    private byte[] images;
+    private byte[] photo;
 
     private double averageRating;
 

@@ -6,6 +6,7 @@ import com.doyoucode.universal_pet_car.entity.User;
 import com.doyoucode.universal_pet_car.request.RegistrationRequest;
 import com.doyoucode.universal_pet_car.request.UserUpdateRequest;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IUserService {
@@ -20,4 +21,6 @@ public interface IUserService {
     void delete(Long userId);
 
     List<UserDto> getAllUsers();
+
+    UserDto getUserWithDetails(Long userId) throws SQLException;
 }

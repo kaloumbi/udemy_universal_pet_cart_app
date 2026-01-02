@@ -12,4 +12,18 @@ public class ReviewDto {
     private String feeback;
 
     private int stars;
+
+    //added after
+    private Long vetId;
+
+    private String vetName;
+
+    private Long reviewerId;
+
+    private String reviewerName;
+
+    private byte[] reviewerImage;
+
+    private byte[] vetImage;
+
 }

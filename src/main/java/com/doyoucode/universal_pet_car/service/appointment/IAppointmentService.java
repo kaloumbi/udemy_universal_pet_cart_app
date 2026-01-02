@@ -1,5 +1,6 @@
 package com.doyoucode.universal_pet_car.service.appointment;
 
+import com.doyoucode.universal_pet_car.dto.AppointmentDto;
 import com.doyoucode.universal_pet_car.entity.Appointment;
 import com.doyoucode.universal_pet_car.request.AppointementUpdateRequest;
 import com.doyoucode.universal_pet_car.request.AppointmentRequest;
@@ -20,4 +21,6 @@ public interface IAppointmentService {
     Appointment getAppointmentById(Long id);
 
     Appointment getAppointmentByNo(String appointmentNo);
+
+    List<AppointmentDto> getUserAppointments(Long userId);
 }

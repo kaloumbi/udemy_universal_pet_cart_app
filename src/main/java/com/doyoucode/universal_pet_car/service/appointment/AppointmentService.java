@@ -1,17 +1,20 @@
 package com.doyoucode.universal_pet_car.service.appointment;
 
+import com.doyoucode.universal_pet_car.dto.AppointmentDto;
+import com.doyoucode.universal_pet_car.dto.EntityConverter;
+import com.doyoucode.universal_pet_car.dto.PetDto;
 import com.doyoucode.universal_pet_car.entity.Appointment;
 import com.doyoucode.universal_pet_car.entity.Pet;
 import com.doyoucode.universal_pet_car.entity.User;
 import com.doyoucode.universal_pet_car.enums.AppointmentStatus;
 import com.doyoucode.universal_pet_car.exceptions.ResourceNotFoundException;
 import com.doyoucode.universal_pet_car.repository.AppointmentRepo;
-import com.doyoucode.universal_pet_car.repository.PetRepo;
 import com.doyoucode.universal_pet_car.repository.UserRepo;
 import com.doyoucode.universal_pet_car.request.AppointementUpdateRequest;
 import com.doyoucode.universal_pet_car.request.BookAppointmentRequest;
 import com.doyoucode.universal_pet_car.service.pet.IPetService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,12 @@ public class AppointmentService implements IAppointmentService {
     private final UserRepo userRepo;
 
     private final IPetService petService;
+
+    private final EntityConverter<Appointment, AppointmentDto> entityConverter;
+
+    private final EntityConverter<Pet, PetDto> petEntityConverter;
+
+    private final ModelMapper modelMapper;
 
     @Override
     public List<Appointment> getAllAppointments(){
@@ -94,4 +103,27 @@ public class AppointmentService implements IAppointmentService {
     public Appointment getAppointmentByNo(String appointmentNo) {
         return appointmentRepo.findByAppointmentNo(appointmentNo);
     }
+
+    @Override
+    public List<AppointmentDto> getUserAppointments(Long userId){
+
+        List<Appointment> appointments = appointmentRepo.findAllByUserId(userId);
+
+        return appointments
+                .stream()
+                .map(appointment -> {
+                    AppointmentDto appointmentDto = entityConverter.mapEntityToDto(appointment, AppointmentDto.class);
+
+                    //Mappage de la relation list pets
+                    List<PetDto> petDtos = appointment.getPets()
+                            .stream()
+                            .map(pet -> petEntityConverter.mapEntityToDto(pet, PetDto.class))
+                            .toList();
+                    appointmentDto.setPets(petDtos);
+                    return appointmentDto;
+                }).toList();
+    }
+
+
+
 }

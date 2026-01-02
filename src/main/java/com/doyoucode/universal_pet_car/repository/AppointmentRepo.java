@@ -5,9 +5,13 @@ import com.doyoucode.universal_pet_car.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface AppointmentRepo extends JpaRepository<Appointment, Long> {
 
     Appointment findByAppointmentNo(String appointmentNo);
 
     boolean existsByVeterinarianIdAndPatientIdAndAppointmentStatus(Long veterinarianId, Long reviewId, AppointmentStatus appointmentStatus);
+
+    List<Appointment> findAllByUserId(Long userId);
 }
