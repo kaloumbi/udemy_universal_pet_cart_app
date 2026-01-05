@@ -125,7 +125,8 @@ public class UserService implements IUserService {
     }
 
     //Conversion particuliere
-    private ReviewDto mapReviewToDto(Review review) throws SQLException {
+    @SneakyThrows
+    private ReviewDto mapReviewToDto(Review review) {
         ReviewDto reviewDto = new ReviewDto();
         reviewDto.setId(review.getId());
         reviewDto.setStars(review.getStars());
@@ -136,20 +137,20 @@ public class UserService implements IUserService {
         return reviewDto;
     }
 
-    private void mapPatientInfo(ReviewDto reviewDto, Review review) throws SQLException {
+    @SneakyThrows
+    private void mapPatientInfo(ReviewDto reviewDto, Review review) {
         if (review.getVeterinarian() != null){
-            reviewDto.setId(review.getVeterinarian().getId());
-            reviewDto.setVetName(review.getVeterinarian().getFirstName() + " "+ review.getVeterinarian().getLastName());
+            reviewDto.setPatientId(review.getVeterinarian().getId());
+            reviewDto.setPatientName(review.getVeterinarian().getFirstName() + " "+ review.getVeterinarian().getLastName());
             // set the photo
             setReviewerPhoto(reviewDto, review);
-
         }
     }
 
     private void mapVeterinarianInfo(ReviewDto reviewDto, Review review) throws SQLException {
         if (review.getVeterinarian() != null){
-            reviewDto.setReviewerId(review.getPatient().getId());
-            reviewDto.setReviewerName(review.getPatient().getFirstName() + " "+ review.getPatient().getLastName());
+            reviewDto.setVeterinarianId(review.getPatient().getId());
+            reviewDto.setVeterinarianName(review.getPatient().getFirstName() + " "+ review.getPatient().getLastName());
             // set the photo
             setVeterinarianPhoto(reviewDto, review);
         }
@@ -158,20 +159,27 @@ public class UserService implements IUserService {
     private void setReviewerPhoto(ReviewDto reviewDto, Review review) throws SQLException {
 
         if (review.getPatient().getPhoto() != null){
-            reviewDto.setReviewerImage(photoService.getImageData(review.getPatient().getPhoto().getId()));
+            try {
+                reviewDto.setPatientImage(photoService.getImageData(review.getPatient().getPhoto().getId()));
+            } catch (SQLException e) {
+                throw new RuntimeException(e.getMessage());
+            }
         }else {
-            reviewDto.setReviewerImage(null);
+            reviewDto.setPatientImage(null);
         }
     }
 
     private void setVeterinarianPhoto(ReviewDto reviewDto, Review review) throws SQLException {
 
         if (review.getVeterinarian().getPhoto() != null){
-            reviewDto.setVetImage(photoService.getImageData(review.getVeterinarian().getPhoto().getId()));
+            try {
+                reviewDto.setVeterinarianImage(photoService.getImageData(review.getVeterinarian().getPhoto().getId()));
+            } catch (SQLException e) {
+                throw new RuntimeException(e.getMessage());
+            }
         }else {
-            reviewDto.setVetImage(null);
+            reviewDto.setVeterinarianName(null);
         }
     }
-
 
 }

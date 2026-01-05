@@ -13,5 +13,6 @@ public interface AppointmentRepo extends JpaRepository<Appointment, Long> {
 
     boolean existsByVeterinarianIdAndPatientIdAndAppointmentStatus(Long veterinarianId, Long reviewId, AppointmentStatus appointmentStatus);
 
+    @Query(value = "SELECT a FROM Appointment a WHERE a.patient.id =: userId OR a.veterinarian.id =:userId")
     List<Appointment> findAllByUserId(Long userId);
 }

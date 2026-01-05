@@ -14,16 +14,16 @@ public class ReviewDto {
     private int stars;
 
     //added after
-    private Long vetId;
+    private Long veterinarianId;
 
-    private String vetName;
+    private String veterinarianName;
 
-    private Long reviewerId;
+    private Long patientId;
 
-    private String reviewerName;
+    private String patientName;
 
-    private byte[] reviewerImage;
+    private byte[] patientImage;
 
-    private byte[] vetImage;
+    private byte[] veterinarianImage;
 
 }
