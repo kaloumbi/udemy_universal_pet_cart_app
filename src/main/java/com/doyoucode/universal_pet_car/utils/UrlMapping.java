@@ -54,6 +54,14 @@ public class UrlMapping {
     public static final String GET_AVERAGE_RATING = "/vet/{vetId}/get-average-rating";
 
 
+    /* ========================== START VETERINARIANS API =============================== */
+    public static final String VETERINARIANS = API + "/veterinarians";
+
+    public static final String GET_ALL_VETERINARIANS = "/get-all-veterinarians";
+
+
+
+
 //    public static final String UPLOAD_PHOTO = "/photo/upload";
 //    public static final String UPDATE_PHOTO = "/photo/{photoId}/update";
 //    public static final String DELETE_PHOTO = "/photo/{photoId}/user/{userId}/delete";
