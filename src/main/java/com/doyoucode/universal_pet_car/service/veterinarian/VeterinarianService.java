@@ -2,6 +2,7 @@ package com.doyoucode.universal_pet_car.service.veterinarian;
 
 import com.doyoucode.universal_pet_car.dto.EntityConverter;
 import com.doyoucode.universal_pet_car.dto.UserDto;
+import com.doyoucode.universal_pet_car.entity.Appointment;
 import com.doyoucode.universal_pet_car.entity.Veterinarian;
 import com.doyoucode.universal_pet_car.repository.ReviewRepo;
 import com.doyoucode.universal_pet_car.repository.VeterinarianRepo;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -62,5 +65,15 @@ public class VeterinarianService implements IVeterinarianService {
         return userDto;
     }
 
+
+    //Search appointments by time
+    private boolean doesAppointmentOverLap(Appointment existingAppointment, LocalTime requestedStartTime, LocalTime requestedEndTime){
+        LocalTime existingStartTime = existingAppointment.getAppointmentTime();
+        LocalTime existingEndTime = existingStartTime.plusHours(2);
+        LocalTime unavailableStartTime = existingStartTime.minusHours(1);
+        LocalTime unavailableEndTime = existingEndTime.plusMinutes(170);
+
+        return !requestedStartTime.isAfter(unavailableStartTime) && !requestedEndTime.isAfter(unavailableEndTime);
+    }
 
 }

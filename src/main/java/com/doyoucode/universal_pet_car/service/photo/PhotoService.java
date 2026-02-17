@@ -64,7 +64,7 @@ public class PhotoService implements IPhotoService {
                 });
 
     }
-
+    
     @Override
     public Photo updatePhoto(Long id, MultipartFile file) throws IOException, SQLException {
         Photo photo = getPhotoById(id);
@@ -88,7 +88,8 @@ public class PhotoService implements IPhotoService {
         if (photo.isPresent()){
             Blob photoBlob = photo.get().getImage();
             int blobLength = (int) photoBlob.length();
-            return new byte[blobLength];
+//            return new byte[blobLength]; => ça renvois un string: probleme d'affichage
+            return photoBlob.getBytes(1, blobLength); //=> ça renvois une image concrete par le path : ça affiche l'image
         }
 
         return null;
