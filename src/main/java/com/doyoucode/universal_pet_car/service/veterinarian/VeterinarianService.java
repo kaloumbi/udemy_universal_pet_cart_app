@@ -4,6 +4,7 @@ import com.doyoucode.universal_pet_car.dto.EntityConverter;
 import com.doyoucode.universal_pet_car.dto.UserDto;
 import com.doyoucode.universal_pet_car.entity.Appointment;
 import com.doyoucode.universal_pet_car.entity.Veterinarian;
+import com.doyoucode.universal_pet_car.repository.AppointmentRepo;
 import com.doyoucode.universal_pet_car.repository.ReviewRepo;
 import com.doyoucode.universal_pet_car.repository.VeterinarianRepo;
 import com.doyoucode.universal_pet_car.service.photo.IPhotoService;
@@ -29,6 +30,8 @@ public class VeterinarianService implements IVeterinarianService {
     private final ReviewRepo reviewRepo;
 
     private final IPhotoService photoService;
+
+    private final AppointmentRepo appointmentRepo;
 
     @Override
     public List<UserDto> getAllVeteriansWithDetails(){
@@ -63,6 +66,32 @@ public class VeterinarianService implements IVeterinarianService {
             }
         }
         return userDto;
+    }
+
+    // Check all veterinarians
+    public List<Veterinarian> getVeterinariansBySpecialization(String specialization){
+
+        return veterinarianRepo.findBySpecialization(specialization);
+    }
+
+
+    //Check Veterinarians
+    private List<Veterinarian> checkAvailableVeterinarians(String specialization, LocalDate date, LocalTime time){
+        List<Veterinarian> veterinarians = getVeterinariansBySpecialization(specialization);
+        return veterinarians.stream()
+                .filter(vet -> isVetAvailable(vet, date, time))
+                .toList();
+    }
+
+    //To check Veterinarian appointment for specific specialization
+    private boolean isVetAvailable(Veterinarian veterinarian, LocalDate requestedDate, LocalTime requestedTime){
+        if (requestedDate != null && requestedTime != null){
+            LocalTime requestedEndTime = requestedTime.plusHours(2);
+            return appointmentRepo.findByVeterinarianAndAppointmentDate(veterinarian, requestedDate)
+                    .stream()
+                    .noneMatch(existingAppointment -> doesAppointmentOverLap(existingAppointment, requestedTime, requestedEndTime));
+        }
+        return true;
     }
 
 

@@ -9,4 +9,6 @@ public interface VeterinarianRepo extends JpaRepository<Veterinarian, Long> {
 
     List<Veterinarian> findAllByUserType(String vet);
 
+    List<Veterinarian> findBySpecialization(String specialization);
+
 }
