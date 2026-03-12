@@ -19,4 +19,8 @@ public class FeedBackMessage {
     public static final String SERVER_ERROR = "SERVER ERROR";
 
     public static final String VET_OR_PATIENT_NOT_FOUND = "Veterinarian or Patient Not Found !";
+
+    public static final String NO_VETS_AVAILABLE = "No veterinarian available for the requested date and time !";
+
+
 }

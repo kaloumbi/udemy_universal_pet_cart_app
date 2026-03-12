@@ -43,7 +43,20 @@ public class VeterinarianService implements IVeterinarianService {
     }
 
 
+    @Override
+    public List<UserDto> findAvailableVetsForAppointment(String specialization, LocalDate date, LocalTime time){
+        List<Veterinarian> filteredVets = getAvailableVeterinarians(specialization, date, time);
+        return filteredVets.stream()
+                .map(this::mapVeterinarianToUserDto)
+                .toList();
+    }
 
+    // Check all veterinarians
+    @Override
+    public List<Veterinarian> getVeterinariansBySpecialization(String specialization){
+
+        return veterinarianRepo.findBySpecialization(specialization);
+    }
 
 
     private UserDto mapVeterinarianToUserDto(Veterinarian veterinarian){
@@ -68,15 +81,9 @@ public class VeterinarianService implements IVeterinarianService {
         return userDto;
     }
 
-    // Check all veterinarians
-    public List<Veterinarian> getVeterinariansBySpecialization(String specialization){
-
-        return veterinarianRepo.findBySpecialization(specialization);
-    }
-
 
     //Check Veterinarians
-    private List<Veterinarian> checkAvailableVeterinarians(String specialization, LocalDate date, LocalTime time){
+    private List<Veterinarian> getAvailableVeterinarians(String specialization, LocalDate date, LocalTime time){
         List<Veterinarian> veterinarians = getVeterinariansBySpecialization(specialization);
         return veterinarians.stream()
                 .filter(vet -> isVetAvailable(vet, date, time))
